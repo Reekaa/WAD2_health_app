@@ -1,8 +1,7 @@
 function About() {
     return (
     <div style={{ padding: 20 }}>
-        <h2>About View</h2>
-        <p>Lorem ipsum dolor sit amet, consectetur adip.</p>
+        <p>We’re here to encourage everyone to live a healthier lifestyle, and to support you in reaching your goals</p>
       </div>
     );
   }
