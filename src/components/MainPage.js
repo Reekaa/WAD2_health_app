@@ -11,8 +11,15 @@ import AddIcon from '@mui/icons-material/Add';
 import Typography from '@mui/material/Typography';
 import GlobalStyles from '@mui/material/GlobalStyles';
 import Container from '@mui/material/Container';
+import { useNavigate } from 'react-router-dom';
 
 export default function MainPage() {
+
+const navigate = useNavigate();
+
+const routeChange = () => {
+    navigate('/create');
+  }
     return (
         <React.Fragment>
             <GlobalStyles styles={{ ul: { margin: 0, padding: 0, listStyle: 'none' } }} />
@@ -38,9 +45,7 @@ export default function MainPage() {
                         <Card style={{backgroundColor: "#E9E7EF", minHeight: '29vw', display:'flex', justiyContent:'space-between', flexDirection:'column'}}>
                             <CardHeader
                                 title="Nutrition"
-                                sx={{
-                                    textAlign: 'center',
-                                }}
+                                sx={{ textAlign: 'center' }}
                             />
                             <CardContent>
                                 <Box
@@ -59,7 +64,7 @@ export default function MainPage() {
                                 </Box>
                             </CardContent>
                             <CardActions sx={{ justifyContent: 'center', mb: 2 }}> 
-                                <Button sx={{ bgcolor: '#3E2C95' }} variant="contained" endIcon={<AddIcon />}>
+                                <Button onClick={routeChange} sx={{ bgcolor: '#3E2C95' }} variant="contained" endIcon={<AddIcon />}>
                                     Add new goal
                                 </Button>
                             </CardActions>
@@ -69,9 +74,7 @@ export default function MainPage() {
                         <Card style={{backgroundColor: "#E9E7EF", minHeight: '29vw'}}>
                         <CardHeader
                                 title="Fitness"
-                                sx={{
-                                    textAlign: 'center'
-                                }}
+                                sx={{ textAlign: 'center' }}
                             />
                             <CardContent>
                                 <Box
@@ -87,7 +90,7 @@ export default function MainPage() {
                                 </Box>
                             </CardContent>
                             <CardActions sx={{ justifyContent: 'center', mb: 2 }}> 
-                                <Button sx={{ bgcolor: '#3E2C95' }} variant="contained" endIcon={<AddIcon />}>
+                                <Button onClick={routeChange} sx={{ bgcolor: '#3E2C95' }} variant="contained" endIcon={<AddIcon />}>
                                     Add new goal
                                 </Button>
                             </CardActions>
@@ -97,9 +100,7 @@ export default function MainPage() {
                         <Card style={{backgroundColor: "#E9E7EF", minHeight: '29vw'}}>
                         <CardHeader
                                 title="Healthy Lifestyle"
-                                sx={{
-                                    textAlign: 'center'
-                                }}
+                                sx={{ textAlign: 'center' }}
                             />
                             <CardContent>
                                 <Box
@@ -114,7 +115,7 @@ export default function MainPage() {
                                 </Box>
                             </CardContent>
                             <CardActions sx={{ justifyContent: 'center', mb: 2 }}> 
-                                <Button sx={{ bgcolor: '#3E2C95' }} variant="contained" endIcon={<AddIcon />}>
+                                <Button onClick={routeChange} sx={{ bgcolor: '#3E2C95' }} variant="contained" endIcon={<AddIcon />}>
                                     Add new goal
                                 </Button>
                             </CardActions>
@@ -125,5 +126,3 @@ export default function MainPage() {
         </React.Fragment>
     );
 }
-
-
