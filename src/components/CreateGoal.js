@@ -1,17 +1,16 @@
 import React, { useState } from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import Card from '@mui/material/Card';
 import CssBaseline from '@mui/material/CssBaseline';
 import Grid from '@mui/material/Grid';
-import GlobalStyles from '@mui/material/GlobalStyles';
 import Container from '@mui/material/Container';
 import TextField from '@mui/material/TextField';
-import CardHeader from '@mui/material/CardHeader';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Avatar from '@mui/material/Avatar';
 import AddIcon from '@mui/icons-material/Add';
 import Typography from '@mui/material/Typography';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const theme = createTheme();
 
@@ -23,31 +22,40 @@ export default function MainPage() {
         startDate: '',
         endDate: '',
         repetition: '',
+        username: 'Claudiu'
     });
 
+    const navigate = useNavigate();
+
+    const routeChange = () => {
+      navigate('/register');
+    }
+
     async function handleSubmit(e) {
-        console.log(e)
-        // e.preventDefault();
-        // if (form.password !== form.confirm) {
-        //     setError(true);
-        //     setErrorMessage('Password not match');
-        // } else {
-        //     try {
-        //         const res = await axios.post(
-        //             'http://localhost:3001/api/register',
-        //             form,
-        //         );
-        //         if (res.status === 201) {
-        //             navigate('/', {
-        //                 message: 'Your account has been created now you can login now',
-        //             });
-        //         }
-        //     } catch (err) {
-        //         console.log(err.response.data);
-        //         setError(true);
-        //         setErrorMessage(err.response.data.message);
-        //     }
-        // }
+        e.preventDefault();
+        console.log(form);
+        if (form.goal === null || form.startDate === null || form.endDate === null) {
+            setError(true);
+            setErrorMessage('Information is missing');
+        } else {
+            try {
+                const res = await axios.post('http://localhost:3001/api/v1/create', form, { 
+                    method: 'POST',
+                    withCredentials: true,
+                    headers: {
+                    "Content-Type": "application/json"
+                  }});
+                if (res.status === 201) {
+                    navigate('/mainpage', {
+                        message: 'Your goal has been created',
+                    });
+                }
+            } catch (err) {
+                console.log(err.response.data);
+                setError(true);
+                setErrorMessage(err.response.data.message);
+            }
+        }
     }
 
     function handleInput(e) {

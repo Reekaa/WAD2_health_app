@@ -3,7 +3,7 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 
-function About() {
+export default function About() {
   return (
     <Container>
       <Box style={{ margin: 50, padding: 20, alignItems: 'center', backgroundColor: "#E9E7EF" }}>
@@ -16,5 +16,3 @@ function About() {
 
   );
 }
-
-export default About;

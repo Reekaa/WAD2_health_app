@@ -5,6 +5,7 @@ const { check, validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const cors = require('cors');
+const withAuth = require('./auth');
 
 const PORT = process.env.PORT || 3001;
 
@@ -13,7 +14,7 @@ const key = 'mysupersecretkey';
 
 const app = express();
 app.use(express.json());
-app.use(cors({ credentials: true, origin: 'http://localhost:3000' }));
+app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
 
 const validator = [
   check('username')
@@ -33,12 +34,25 @@ const validator = [
 
 app.get('/api', (req, res) => {
   res.status(200).json({
-    message: 'Hi Reka',
+    message: 'Hello world',
+  });
+});
+
+app.get('/api/v1/check', withAuth, (req, res) => {
+  const { id } = req.data;
+  db.findOne({ _id: id }, (err, document) => {
+    if (err) {
+      res.status(500).json(err);
+    } else {
+      res.status(200).json({
+        id: document._id,
+        username: document.username,
+      });
+    }
   });
 });
 
 app.post('/api/register', validator, (req, res) => {
-  console.log(req.body)
   const { username, password } = req.body;
   const errorFormatter = ({ message, param }) => ({ message, param });
   const errors = validationResult(req).formatWith(errorFormatter);
@@ -118,22 +132,112 @@ app.post('/api/login', (req, res) => {
   });
 });
 
-// app.delete('/api/logout', (req, res) => {
-//   console.log(req);
-//   if (req.session) {
-//     req.session.destroy(err => {
-//       if (err) {
-//         res.status(400).send('Unable to log out')
-//       } else {
-//         res.status(200).send({
-//           message: 'Logout successful'
-//         });
-//       }
-//     });
-//   } else {
-//     res.end()
-//   }
-// })
+app.get('/api/v1/logout', (req, res) => {
+  res.clearCookie('token');
+  res.sendStatus(200);
+});
+
+app.post('/api/v1/create', (req, res) => {
+  console.log(req.body)
+  const { goal_id, goal, startDate, endDate, repetition, completed, username } = req.body;
+  db.update(
+    { username: username },
+    {
+      $pull: {
+        goals: {
+          goal_id: goal_id,
+        }
+      },
+      $push: {
+        goals: 
+          {
+            goal_id: goal_id,
+            goal: goal,
+            startDate: startDate,
+            endDate: endDate,
+            repetition: repetition,
+            completed: completed
+          }
+      }
+    },
+    { upsert: false },
+    function (err) {
+      if(err){
+        res.sendStatus(500);
+      } else {
+        res.status(201).json({
+          message: "Goal updated"
+        });
+      }
+    }
+  )
+});
+
+/**
+{"username":"Claudiu","password":"$2a$10$yijoNHQFQMHwyK/43J0HuOrKO3gv/keA8nKTeakVsVbX3V5xm6L9O","_id":"mAK0h8G8kyEGNDF1","goals":[{"goal_id":"001","goal":"g1","startDate":"1","endDate":"2"},{"goal_id":"002","goal":"g2","startDate":"1","endDate":"3"}]}
+*/
+
+
+app.post('/api/v1/update', (req, res) => {
+  console.log(req.body)
+  const { goal_id, goal, startDate, endDate, repetition, completed, username } = req.body;
+  db.update(
+    { username: username },
+    {
+      $pull: {
+        goals: {
+          goal_id: goal_id,
+        }
+      },
+      $push: {
+        goals: 
+          {
+            goal_id: goal_id,
+            goal: goal,
+            startDate: startDate,
+            endDate: endDate,
+            repetition: repetition,
+            completed: completed
+          }
+      }
+    },
+    { upsert: false },
+    function (err) {
+      if(err){
+        res.sendStatus(500);
+      } else {
+        res.status(201).json({
+          message: "Goal updated"
+        });
+      }
+    }
+  )
+});
+
+app.delete('/api/v1/delete', (req, res) => {
+  console.log(req.body)
+  const { goal_id, username } = req.body;
+  db.update(
+    { username: username },
+    {
+      $pull: {
+        goals: {
+          goal_id: goal_id,
+        }
+      }
+    },
+    { upsert: false },
+    function (err) {
+      if(err){
+        res.sendStatus(500);
+      } else {
+        res.status(201).json({
+          message: "Goal deleted"
+        });
+      }
+    }
+  )
+});
 
 app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);

@@ -10,9 +10,9 @@ import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import Image from '../images/jared-rice-NTyBbu66_SI-unsplash.jpg'
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import useToken from '../utils/useToken';
 
 function Copyright(props) {
     return (
@@ -37,8 +37,8 @@ export default function Login() {
     const [error, setError] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
     const navigate = useNavigate();
-    //   const { status, setStatus } = useToken('status');
-
+    const { status, setStatus } = useToken('status');
+    
     function handleInput(e) {
         setForm({
             ...form,
@@ -50,18 +50,29 @@ export default function Login() {
         e.preventDefault();
         try {
             const res = await axios.post('http://localhost:3001/api/login', form, {
+                method: 'POST',
                 withCredentials: true,
+                headers: {
+                    "Content-Type": "application/json"
+                  }
             });
+            console.log('login response', res);
             if (res.status === 200) {
-                // setStatus('logged-in');
-                navigate('/');
+                setStatus('logged-in');
+                console.log('status line 63', status);
+                navigate('/mainpage');
+                console.log('why the fuck you dont chagne status');
             }
+            // console.log('after login', status);
         } catch (err) {
-            console.log('error', err);
+            // console.log('error', err);
             setError(true);
             setErrorMessage(err.response.data.message);
         }
     }
+    if (status === 'logged-in') {
+        navigate('/mainpage');
+      }
 
     return (
         <ThemeProvider theme={theme}>
@@ -130,80 +141,4 @@ export default function Login() {
         </ThemeProvider>
     );
 }
-
-// /* eslint-disable jsx-a11y/label-has-associated-control */
-// import React from 'react';
-// import styled from 'styled-components';
-// import axios from 'axios';
-// // import { redirect } from 'react-router-dom';
-// // import useToken from '../utils/useToken';
-// import { useNavigate } from 'react-router-dom';
-
-
-// function Login() {
-//   const [form, setForm] = React.useState({
-//     username: '',
-//     password: '',
-//   });
-//   const [error, setError] = React.useState(false);
-//   const [errorMessage, setErrorMessage] = React.useState('');
-//   const navigate = useNavigate();
-// //   const { status, setStatus } = useToken('status');
-
-//   function handleInput(e) {
-//     setForm({
-//       ...form,
-//       [e.target.name]: e.target.value,
-//     });
-//   }
-
-//   async function handleSubmit(e) {
-//     e.preventDefault();
-//     try {
-//       const res = await axios.post('http://localhost:3001/api/login', form, {
-//         withCredentials: true,
-//       });
-//       if (res.status === 200) {
-//         // setStatus('logged-in');
-//         navigate('/');
-//       }
-//     } catch (err) {
-//       console.log('error', err);
-//       setError(true);
-//       setErrorMessage(err.response.data.message);
-//     }
-//   }
-
-// //   if (status === 'logged-in') {
-// //     return <Redirect to="/" />;
-// //   }
-
-//   return (
-//     <StyledBox>
-//       {error && <StyledError>{errorMessage}</StyledError>}
-//       <StyledForm onSubmit={handleSubmit}>
-//         <h1 style={{ marginTop: 0 }}>Login</h1>
-//         <label htmlFor="username">Username</label>
-//         <StyledInput
-//           type="text"
-//           id="username"
-//           name="username"
-//           onChange={handleInput}
-//           value={form.username}
-//         />
-//         <label htmlFor="password">Password</label>
-//         <StyledInput
-//           type="password"
-//           id="password"
-//           name="password"
-//           onChange={handleInput}
-//           value={form.password}
-//         />
-//         <StyledButton type="submit">Login</StyledButton>
-//       </StyledForm>
-//     </StyledBox>
-//   );
-// }
-
-// export default Login;
 
