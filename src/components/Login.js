@@ -12,7 +12,7 @@ import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import useToken from '../utils/useToken';
+import { useAuth } from '../utils/userContext';
 
 function Copyright(props) {
     return (
@@ -30,6 +30,7 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function Login() {
+    const { user, setUserData, isLoggedIn, setIsLoggedIn} = useAuth()
     const [form, setForm] = useState({
         username: '',
         password: '',
@@ -37,7 +38,6 @@ export default function Login() {
     const [error, setError] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
     const navigate = useNavigate();
-    const { status, setStatus } = useToken('status');
     
     function handleInput(e) {
         setForm({
@@ -55,25 +55,24 @@ export default function Login() {
                 headers: {
                     "Content-Type": "application/json"
                   }
-            });
-            console.log('login response', res);
+            })
             if (res.status === 200) {
-                setStatus('logged-in');
-                console.log('status line 63', status);
+                setIsLoggedIn(true);
+                setUserData({
+                    id: res.data.id,
+                    username: res.data.username
+                })
                 navigate('/mainpage');
-                console.log('why the fuck you dont chagne status');
             }
-            // console.log('after login', status);
         } catch (err) {
-            // console.log('error', err);
             setError(true);
             setErrorMessage(err.response.data.message);
         }
     }
-    if (status === 'logged-in') {
+    if (isLoggedIn) {
         navigate('/mainpage');
       }
-
+      
     return (
         <ThemeProvider theme={theme}>
             <Grid

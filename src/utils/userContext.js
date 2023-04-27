@@ -1,20 +1,51 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { useState, useEffect, useContext } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 export const UserContext = React.createContext();
 
-export function UserProvider({ children }) {
-  const [userData, setUserData] = React.useState({
-    id: '',
-    username: '',
-  });
-  return (
-    <UserContext.Provider value={{ userData, setUserData }}>
-      {children}
-    </UserContext.Provider>
-  );
+export function useAuth() {
+   return useContext(UserContext);
 }
 
-UserProvider.propTypes = {
-  children: PropTypes.node.isRequired,
-};
+export function UserProvider({ children }) {
+
+  const [user, setUserData] = useState(null)
+  const [isLoggedIn, setIsLoggedIn] = useState(null)
+
+  const navigate = useNavigate();
+
+  const value = {
+    user,
+    setUserData,
+    isLoggedIn,
+    setIsLoggedIn
+  }
+
+  useEffect(() => {
+    try {
+      const res = axios.get('http://localhost:3001/api/v1/check', {
+        withCredentials: true,
+      })
+      if (res.status === 200) {
+        setIsLoggedIn(true);
+        setUserData({
+          id: res.data.id,
+          username: res.data.username,
+        });
+        console.log(user);
+        setIsLoggedIn(false);
+      }
+    } catch (error) {
+      console.log(error.response.data);
+      setIsLoggedIn(false);
+      navigate('/login');
+    }
+  }, [user, isLoggedIn])
+
+  return (
+    <UserContext.Provider value={value}>
+      {children}
+    </UserContext.Provider>
+  )
+}

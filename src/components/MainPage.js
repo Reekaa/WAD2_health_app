@@ -12,14 +12,26 @@ import Typography from '@mui/material/Typography';
 import GlobalStyles from '@mui/material/GlobalStyles';
 import Container from '@mui/material/Container';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../utils/userContext';
+
 
 export default function MainPage() {
+const { user } = useAuth() 
+const userId = user.id 
 
 const navigate = useNavigate();
 
 const routeChange = () => {
     navigate('/create');
 }
+
+React.useEffect(() => {
+    try{
+
+    } catch (error) {
+        console.log(error);
+    }
+}, [])
 
 return (
     <React.Fragment>

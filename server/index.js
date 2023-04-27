@@ -6,6 +6,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const cors = require('cors');
 const withAuth = require('./auth');
+const crypto = require('crypto');
 
 const PORT = process.env.PORT || 3001;
 
@@ -92,7 +93,6 @@ app.post('/api/register', validator, (req, res) => {
 });
 
 app.post('/api/login', (req, res) => {
-  console.log(req.body)
   const { username, password } = req.body;
   db.findOne({ username }, (err, document) => {
     if (err) {
@@ -103,7 +103,7 @@ app.post('/api/login', (req, res) => {
           res.sendStatus(500);
         } else if (same) {
           const token = jwt.sign({ id: document._id }, key, {
-            expiresIn: '1m',
+            expiresIn: '15m',
           });
           res.cookie('token', token, {
             httpOnly: true,
@@ -138,10 +138,11 @@ app.get('/api/v1/logout', (req, res) => {
 });
 
 app.post('/api/v1/create', (req, res) => {
-  console.log(req.body)
-  const { goal_id, goal, startDate, endDate, repetition, completed, username } = req.body;
+  const { goalType, goalName, startDate, endDate, repetition } = req.body;
+  const goal_id = crypto.randomUUID()
+  const id = req.headers.authorization
   db.update(
-    { username: username },
+    { _id: id },
     {
       $pull: {
         goals: {
@@ -152,11 +153,11 @@ app.post('/api/v1/create', (req, res) => {
         goals: 
           {
             goal_id: goal_id,
-            goal: goal,
+            goalType: goalType,
+            goalName: goalName,
             startDate: startDate,
             endDate: endDate,
-            repetition: repetition,
-            completed: completed
+            repetition: repetition
           }
       }
     },
@@ -166,7 +167,7 @@ app.post('/api/v1/create', (req, res) => {
         res.sendStatus(500);
       } else {
         res.status(201).json({
-          message: "Goal updated"
+          message: "Goal created"
         });
       }
     }
@@ -179,7 +180,6 @@ app.post('/api/v1/create', (req, res) => {
 
 
 app.post('/api/v1/update', (req, res) => {
-  console.log(req.body)
   const { goal_id, goal, startDate, endDate, repetition, completed, username } = req.body;
   db.update(
     { username: username },
@@ -215,7 +215,6 @@ app.post('/api/v1/update', (req, res) => {
 });
 
 app.delete('/api/v1/delete', (req, res) => {
-  console.log(req.body)
   const { goal_id, username } = req.body;
   db.update(
     { username: username },
@@ -233,6 +232,22 @@ app.delete('/api/v1/delete', (req, res) => {
       } else {
         res.status(201).json({
           message: "Goal deleted"
+        });
+      }
+    }
+  )
+});
+
+app.get('/api/v1/goals', (req, res) => {
+  const id = req.headers.authorization
+  db.find(
+    { _id: id },
+    function (err) {
+      if(err){
+        res.sendStatus(500);
+      } else {
+        res.status(201).json({
+          message: "Found goals"
         });
       }
     }

@@ -11,25 +11,25 @@ import AddIcon from '@mui/icons-material/Add';
 import Typography from '@mui/material/Typography';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../utils/userContext';
 
 const theme = createTheme();
 
-export default function MainPage() {
+export default function CreateGoal() {
+    const { user } = useAuth() 
+    const userId = user.id
     const [error, setError] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
     const [form, setForm] = useState({
-        goal: '',
+        goalType: '',
+        goalName: '',
         startDate: '',
         endDate: '',
-        repetition: '',
-        username: 'Claudiu'
+        repetition: ''
     });
 
+    console.log('creategoal userid', user);
     const navigate = useNavigate();
-
-    const routeChange = () => {
-      navigate('/register');
-    }
 
     async function handleSubmit(e) {
         e.preventDefault();
@@ -42,8 +42,10 @@ export default function MainPage() {
                 const res = await axios.post('http://localhost:3001/api/v1/create', form, { 
                     method: 'POST',
                     withCredentials: true,
+
                     headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    'Authorization': userId
                   }});
                 if (res.status === 201) {
                     navigate('/mainpage', {
@@ -87,14 +89,26 @@ export default function MainPage() {
                         <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
                             <Grid container spacing={2}>
                                 <Grid item xs={12}>
+                                <TextField
+                                        required
+                                        fullWidth
+                                        name="goalType"
+                                        label="Goal Type"
+                                        id="goalType"
+                                        autoFocus
+                                        autoComplete="goalType"
+                                        onChange={handleInput}
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
                                     <TextField
                                         required
                                         fullWidth
-                                        name="goal"
-                                        label="Goal"
-                                        id="foal"
+                                        name="goalName"
+                                        label="Goal Name"
+                                        id="goalName"
                                         autoFocus
-                                        autoComplete="goal"
+                                        autoComplete="goalName"
                                         onChange={handleInput}
                                     />
                                 </Grid>

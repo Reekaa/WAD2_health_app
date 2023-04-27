@@ -3,8 +3,8 @@ const jwt = require('jsonwebtoken');
 const secret = 'mysupersecretkey';
 
 const withAuth = (req, res, next) => {
-  console.log(req.headers.cookie);
-  const token  = req.headers.cookie;
+  const updateToken = req.headers.cookie.slice(6);
+  const token = updateToken;
   if (!token) {
     res.status(401).send('Unauthorized: No token provided');
   } else {

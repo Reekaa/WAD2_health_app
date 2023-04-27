@@ -5,11 +5,14 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import { Link } from 'react-router-dom';
 import Button from '@mui/material/Button';
-import useToken from '../utils/useToken';
 import axios from 'axios';
+import { useAuth } from '../utils/userContext';
+import { useNavigate } from 'react-router-dom';
 
 export default function Navbar() {
-  const { status, setStatus } = useToken();
+  const { isLoggedIn, setIsLoggedIn } = useAuth()
+
+  const navigate = useNavigate();
 
   async function logOut() {
     try {
@@ -17,15 +20,15 @@ export default function Navbar() {
         withCredentials: true,
       });
       if (res.status === 200) {
-        setStatus('logged-out');
-        window.location = '/';
+        setIsLoggedIn(false);
+        navigate('/login');
       }
     } catch (error) {
       console.error(error.response.data);
     }
   }
 
-  if(status === 'logged-in') {
+  if(isLoggedIn) {
     return (
       <AppBar position="static" sx={{ bgcolor: '#3E2C95' }}>
         <Toolbar sx={{ml: 10, display: 'flex', justifyContent: 'flex-end'}}>
@@ -33,10 +36,12 @@ export default function Navbar() {
               MY HEALTH APP
           </Typography>
           <Box >
-              <Link to="/" style={{ padding: 5, color:'#FFFFFF' }}>
-                Home
+              <Link to="/achievements" style={{ padding: 5, color:'#FFFFFF' }}>
+                Achievements
               </Link>
-              <Link onClick={logOut}>Logout</Link>
+              <Button onClick={logOut} href="/login" variant="outlined" sx={{ my: 1, mx: 1.5, bgcolor: '#FFFFFF' }}>
+                Logout
+              </Button>
           </Box>
         </Toolbar>
       </AppBar>
@@ -59,7 +64,7 @@ export default function Navbar() {
                 Register
               </Link>
               <Button href="/login" variant="outlined" sx={{ my: 1, mx: 1.5, bgcolor: '#FFFFFF' }}>
-                  Login
+                Login
               </Button>
           </Box>
         </Toolbar>
