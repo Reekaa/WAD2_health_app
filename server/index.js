@@ -240,14 +240,15 @@ app.delete('/api/v1/delete', (req, res) => {
 
 app.get('/api/v1/goals', (req, res) => {
   const id = req.headers.authorization
-  db.find(
-    { _id: id },
-    function (err) {
+  db.find({ _id: id }, function (err, doc) {
+      const data = doc
+      console.log(data[0].goals);
       if(err){
         res.sendStatus(500);
       } else {
-        res.status(201).json({
-          message: "Found goals"
+        res.status(200).json({
+          message: "Goals found",
+          goals: data[0].goals
         });
       }
     }
