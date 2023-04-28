@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -10,6 +8,7 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import GlobalStyles from '@mui/material/GlobalStyles';
 import Container from '@mui/material/Container';
+import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../utils/userContext';
 import axios from 'axios';
@@ -20,7 +19,6 @@ export default function Achievements({ }) {
     const [goals, setGoalsData] = useState([])
     const [errorMessage, setErrorMessage] = useState('');
     const [error, setError] = useState(false);
-    const navigate = useNavigate();
 
     React.useEffect(() => {
         const fetchData = async () => {
@@ -82,6 +80,7 @@ export default function Achievements({ }) {
                                                 <Typography variant="body1" sx={{ mb: 1 }}>Start date: {goal.startDate}</Typography>
                                                 <Typography variant="body1" sx={{ mb: 1 }}>End date: {goal.endDate}</Typography>
                                                 <Typography variant="body1" sx={{ mb: 1 }}>Repetition: {goal.repetition}</Typography>
+                                                <Typography variant="body1" sx={{ mb: 1 }}>Completed: Yes</Typography>
                                             </Box>
                                         </CardContent>
                                     </Card>
