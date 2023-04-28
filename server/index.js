@@ -138,7 +138,7 @@ app.get('/api/logout', (req, res) => {
 });
 
 app.post('/api/create', (req, res) => {
-  const { goalType, goalName, startDate, endDate, repetition } = req.body;
+  const { goalType, goalName, startDate, endDate, repetition, complete } = req.body;
   const goal_id = crypto.randomUUID()
   const id = req.headers.authorization
   db.update(
@@ -157,7 +157,8 @@ app.post('/api/create', (req, res) => {
             goalName: goalName,
             startDate: startDate,
             endDate: endDate,
-            repetition: repetition
+            repetition: repetition,
+            complete: complete
           }
       }
     },
@@ -179,10 +180,12 @@ app.post('/api/create', (req, res) => {
 */
 
 
-app.post('/api/update', (req, res) => {
-  const { goal_id, goal, startDate, endDate, repetition, completed, username } = req.body;
+app.post('/api/update/:goal_id', (req, res) => {
+  const { goalType, goalName, startDate, endDate, repetition, complete } = req.body;
+  const goal_id = req.params.goal_id
+  const id = req.headers.authorization
   db.update(
-    { username: username },
+    { _id: id },
     {
       $pull: {
         goals: {
@@ -193,11 +196,12 @@ app.post('/api/update', (req, res) => {
         goals: 
           {
             goal_id: goal_id,
-            goal: goal,
+            goalType: goalType,
+            goalName: goalName,
             startDate: startDate,
             endDate: endDate,
             repetition: repetition,
-            completed: completed
+            complete: complete
           }
       }
     },
@@ -214,10 +218,11 @@ app.post('/api/update', (req, res) => {
   )
 });
 
-app.delete('/api/delete', (req, res) => {
-  const { goal_id, username } = req.body;
+app.delete('/api/delete/:goal_id', (req, res) => {
+  const goal_id = req.params.goal_id
+  const id = req.headers.authorization
   db.update(
-    { username: username },
+    { _id: id },
     {
       $pull: {
         goals: {

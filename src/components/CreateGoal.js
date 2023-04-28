@@ -25,16 +25,14 @@ export default function CreateGoal() {
         goalName: '',
         startDate: '',
         endDate: '',
-        repetition: ''
+        repetition: '',
+        complete: false
     });
-
-    console.log('creategoal userid', user);
     const navigate = useNavigate();
 
     async function handleSubmit(e) {
         e.preventDefault();
-        console.log(form);
-        if (form.goal === null || form.startDate === null || form.endDate === null) {
+        if (form.Type === null || form.goalName === null || form.startDate === null || form.endDate === null) {
             setError(true);
             setErrorMessage('Information is missing');
         } else {
@@ -42,7 +40,6 @@ export default function CreateGoal() {
                 const res = await axios.post('http://localhost:3001/api/create', form, { 
                     method: 'POST',
                     withCredentials: true,
-
                     headers: {
                     "Content-Type": "application/json",
                     'Authorization': userId
@@ -96,7 +93,6 @@ export default function CreateGoal() {
                                         label="Goal Type"
                                         id="goalType"
                                         autoFocus
-                                        autoComplete="goalType"
                                         onChange={handleInput}
                                     />
                                 </Grid>
@@ -120,7 +116,6 @@ export default function CreateGoal() {
                                         label="Start date"
                                         type="startDate"
                                         id="startDate"
-                                        // autoComplete="new-password"
                                         onChange={handleInput}
                                     />
                                 </Grid>
@@ -132,7 +127,6 @@ export default function CreateGoal() {
                                         label="End date"
                                         type="endDate"
                                         id="endDate"
-                                        // autoComplete="confirm-password"
                                         onChange={handleInput}
                                     />
                                 </Grid>
@@ -143,7 +137,6 @@ export default function CreateGoal() {
                                         label="Repetition"
                                         type="repetition"
                                         id="repetition"
-                                        // autoComplete="confirm-password"
                                         onChange={handleInput}
                                     />
                                 </Grid>
