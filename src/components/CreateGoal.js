@@ -9,6 +9,9 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Avatar from '@mui/material/Avatar';
 import AddIcon from '@mui/icons-material/Add';
 import Typography from '@mui/material/Typography';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../utils/userContext';
@@ -16,7 +19,7 @@ import { useAuth } from '../utils/userContext';
 const theme = createTheme();
 
 export default function CreateGoal() {
-    const { user } = useAuth() 
+    const { user } = useAuth()
     const userId = user.id
     const [error, setError] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
@@ -37,13 +40,14 @@ export default function CreateGoal() {
             setErrorMessage('Information is missing');
         } else {
             try {
-                const res = await axios.post('http://localhost:3001/api/create', form, { 
+                const res = await axios.post('http://localhost:3001/api/create', form, {
                     method: 'POST',
                     withCredentials: true,
                     headers: {
-                    "Content-Type": "application/json",
-                    'Authorization': userId
-                  }});
+                        "Content-Type": "application/json",
+                        'Authorization': userId
+                    }
+                });
                 if (res.status === 201) {
                     navigate('/goals', {
                         message: 'Your goal has been created',
@@ -55,6 +59,14 @@ export default function CreateGoal() {
                 setErrorMessage(err.response.data.message);
             }
         }
+    }
+
+    function handleChange(e) {
+        e.preventDefault();
+        setForm({
+            ...form,
+            goalType: e.explicitOriginalTarget.outerText
+        });
     }
 
     function handleInput(e) {
@@ -83,73 +95,77 @@ export default function CreateGoal() {
                         Create Goal
                     </Typography>
                     {error && <Typography sx={{ p: 1, color: "red" }}>{errorMessage}</Typography>}
-                        <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
-                            <Grid container spacing={2}>
-                                <Grid item xs={12}>
-                                <TextField
-                                        required
-                                        fullWidth
-                                        name="goalType"
-                                        label="Goal Type"
-                                        id="goalType"
-                                        autoFocus
-                                        onChange={handleInput}
-                                    />
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <TextField
-                                        required
-                                        fullWidth
-                                        name="goalName"
-                                        label="Goal Name"
-                                        id="goalName"
-                                        autoFocus
-                                        autoComplete="goalName"
-                                        onChange={handleInput}
-                                    />
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <TextField
-                                        required
-                                        fullWidth
-                                        name="startDate"
-                                        label="Start date"
-                                        type="startDate"
-                                        id="startDate"
-                                        onChange={handleInput}
-                                    />
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <TextField
-                                        required
-                                        fullWidth
-                                        name="endDate"
-                                        label="End date"
-                                        type="endDate"
-                                        id="endDate"
-                                        onChange={handleInput}
-                                    />
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <TextField
-                                        fullWidth
-                                        name="repetition"
-                                        label="Repetition"
-                                        type="repetition"
-                                        id="repetition"
-                                        onChange={handleInput}
-                                    />
-                                </Grid>
+                    <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+                        <Grid container spacing={2}>
+                            <Grid item xs={12}>
+                                <InputLabel id="demo-simple-select-label">Goal Type</InputLabel>
+                                <Select
+                                    // labelId="demo-simple-select-label"
+                                    // id="demo-simple-select"
+                                    // value={age}
+                                    label="Goal Type"
+                                    onChange={handleChange}
+                                    sx={{ minWidth: 400 }}
+                                >
+                                    <MenuItem value={10}>Fitness</MenuItem>
+                                    <MenuItem value={20}>Nutrition</MenuItem>
+                                    <MenuItem value={30}>Healthy Lifestyle</MenuItem>
+                                </Select>
                             </Grid>
-                            <Button
-                                type="submit"
-                                fullWidth
-                                variant="contained"
-                                sx={{ mt: 3, mb: 2, bgcolor: '#3E2C95' }}
-                            >
-                                Create
-                            </Button>
-                        </Box>
+                            <Grid item xs={12}>
+                                <TextField
+                                    required
+                                    fullWidth
+                                    name="goalName"
+                                    label="Goal Name"
+                                    id="goalName"
+                                    autoFocus
+                                    autoComplete="goalName"
+                                    onChange={handleInput}
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField
+                                    required
+                                    fullWidth
+                                    name="startDate"
+                                    label="Start date"
+                                    type="startDate"
+                                    id="startDate"
+                                    onChange={handleInput}
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField
+                                    required
+                                    fullWidth
+                                    name="endDate"
+                                    label="End date"
+                                    type="endDate"
+                                    id="endDate"
+                                    onChange={handleInput}
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField
+                                    fullWidth
+                                    name="repetition"
+                                    label="Repetition"
+                                    type="repetition"
+                                    id="repetition"
+                                    onChange={handleInput}
+                                />
+                            </Grid>
+                        </Grid>
+                        <Button
+                            type="submit"
+                            fullWidth
+                            variant="contained"
+                            sx={{ mt: 3, mb: 2, bgcolor: '#3E2C95' }}
+                        >
+                            Create
+                        </Button>
+                    </Box>
                 </Box>
             </Container>
         </ThemeProvider >
