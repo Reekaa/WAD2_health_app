@@ -48,8 +48,7 @@ export default function Register() {
     async function handleSubmit(e) {
         e.preventDefault();
         if (form.password !== form.confirm) {
-            setError(true);
-            setErrorMessage('Password not match');
+            setErrorMessage('Passwords do not match');
         } else {
             try {
                 const res = await axios.post(
@@ -57,18 +56,17 @@ export default function Register() {
                     form,
                 );
                 if (res.status === 201) {
-                    navigate('/', {
+                    navigate('/login', {
                         message: 'Your account has been created now you can login now',
                     });
                 }
             } catch (err) {
-                console.log(err.response.data);
-                setError(true);
+                console.log(err.response);
                 setErrorMessage(err.response.data.message);
             }
         }
     }
-
+    console.log(errorMessage);
     return (
         <ThemeProvider theme={theme}>
             <Container component="main" maxWidth="xs">
@@ -87,7 +85,7 @@ export default function Register() {
                     <Typography component="h1" variant="h5">
                         Register
                     </Typography>
-                    {error && <Typography sx={{ p: 1, color:"red" }}>{errorMessage}</Typography>}
+                    <Typography sx={{ p: 1, color:"red" }}>{errorMessage}</Typography>
                     <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
                         <Grid container spacing={2}>
                             <Grid item xs={12}>
@@ -121,7 +119,7 @@ export default function Register() {
                                     name="confirm"
                                     label="Confirm Password"
                                     type="password"
-                                    id="password"
+                                    id="confirm-password"
                                     autoComplete="confirm-password"
                                     onChange={handleInput}
                                 />

@@ -30,7 +30,7 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function Login() {
-    const { user, setUserData, isLoggedIn, setIsLoggedIn} = useAuth()
+    const { user, setUserData, isLoggedIn, setIsLoggedIn } = useAuth()
     const [form, setForm] = useState({
         username: '',
         password: '',
@@ -38,7 +38,7 @@ export default function Login() {
     const [error, setError] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
     const navigate = useNavigate();
-    
+
     function handleInput(e) {
         setForm({
             ...form,
@@ -54,7 +54,7 @@ export default function Login() {
                 withCredentials: true,
                 headers: {
                     "Content-Type": "application/json"
-                  }
+                }
             })
             if (res.status === 200) {
                 setIsLoggedIn(true);
@@ -71,8 +71,10 @@ export default function Login() {
     }
     if (isLoggedIn) {
         navigate('/mainpage');
-      }
-      
+    }
+
+    console.log(error);
+    console.log(errorMessage);
     return (
         <ThemeProvider theme={theme}>
             <Grid
@@ -85,7 +87,7 @@ export default function Login() {
             >
                 <CssBaseline />
                 <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
-                    {error && { errorMessage }}
+
                     <Box
                         sx={{
                             my: 8,
@@ -95,6 +97,9 @@ export default function Login() {
                             alignItems: 'center',
                         }}
                     >
+                        <Typography component="h1" variant="h5" sx={{ mb: 4, color: '#b32000' }}>
+                            {errorMessage}
+                        </Typography>
                         <Avatar sx={{ m: 1, bgcolor: '#3E2C95' }}>
                             <LockOutlinedIcon />
                         </Avatar>

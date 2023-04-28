@@ -141,14 +141,15 @@ app.post('/api/create', (req, res) => {
   const { goalType, goalName, startDate, endDate, repetition, complete } = req.body;
   const goal_id = crypto.randomUUID()
   const id = req.headers.authorization
+  console.log(goal_id, id);
   db.update(
     { _id: id },
     {
-      $pull: {
-        goals: {
-          goal_id: goal_id,
-        }
-      },
+      // $pull: {
+      //   goals: {
+      //     goal_id: goal_id,
+      //   }
+      // },
       $push: {
         goals: 
           {
@@ -165,6 +166,7 @@ app.post('/api/create', (req, res) => {
     { upsert: false },
     function (err) {
       if(err){
+        console.log(err);
         res.sendStatus(500);
       } else {
         res.status(201).json({
@@ -228,6 +230,7 @@ app.delete('/api/delete/:goal_id', (req, res) => {
     { upsert: false },
     function (err) {
       if(err){
+        console.log(err);
         res.sendStatus(500);
       } else {
         res.status(201).json({
@@ -244,6 +247,7 @@ app.get('/api/goals', (req, res) => {
       const data = doc
       console.log(data[0].goals);
       if(err){
+        console.log(err);
         res.sendStatus(500);
       } else {
         res.status(200).json({
