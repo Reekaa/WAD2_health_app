@@ -24,7 +24,7 @@ export function UserProvider({ children }) {
 
   useEffect(() => {
     try {
-      const res = axios.get('http://localhost:3001/api/v1/check', {
+      const res = axios.get('http://localhost:3001/api/check', {
         withCredentials: true,
       })
       if (res.status === 200) {

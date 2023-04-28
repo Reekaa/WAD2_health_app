@@ -39,7 +39,7 @@ export default function CreateGoal() {
             setErrorMessage('Information is missing');
         } else {
             try {
-                const res = await axios.post('http://localhost:3001/api/v1/create', form, { 
+                const res = await axios.post('http://localhost:3001/api/create', form, { 
                     method: 'POST',
                     withCredentials: true,
 
@@ -48,7 +48,7 @@ export default function CreateGoal() {
                     'Authorization': userId
                   }});
                 if (res.status === 201) {
-                    navigate('/mainpage', {
+                    navigate('/goals', {
                         message: 'Your goal has been created',
                     });
                 }

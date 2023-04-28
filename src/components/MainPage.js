@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
@@ -14,24 +14,12 @@ import Container from '@mui/material/Container';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../utils/userContext';
 
-
 export default function MainPage() {
-const { user } = useAuth() 
-const userId = user.id 
-
 const navigate = useNavigate();
 
 const routeChange = () => {
     navigate('/create');
 }
-
-React.useEffect(() => {
-    try{
-
-    } catch (error) {
-        console.log(error);
-    }
-}, [])
 
 return (
     <React.Fragment>
@@ -48,7 +36,7 @@ return (
                 Set and track your goals
             </Typography>
             <Typography variant="h5" align="center" color="text.secondary" component="p">
-                Set personal goals in any of the three categories below. You will be able to add, edit and delete goals. 
+                See the three categories below where you can create personal goals.
             </Typography>
         </Container>
 

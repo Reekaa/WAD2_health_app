@@ -13,6 +13,7 @@ import MainPage from './components/MainPage'
 import CreateGoal from './components/CreateGoal'
 import UpdateGoal from './components/UpdateGoal'
 import Achievements from './components/Achievements'
+import Goals from './components/Goals'
 import PrivateRoutes from './utils/PrivateRoutes'
 
 
@@ -45,6 +46,7 @@ const App = () => {
                 <Route path="/create" element={<CreateGoal />} />
                 <Route path="/update" element={<UpdateGoal />} />
                 <Route path="/achievements" element={<Achievements />} />
+                <Route path="/goals" element={<Goals />} />
               {/* </Route> */}
               <Route path="/" element={<Home />} />
               <Route path="/about" element={<About />} />          

@@ -16,7 +16,7 @@ export default function Navbar() {
 
   async function logOut() {
     try {
-      const res = await axios.get('http://localhost:3001/api/v1/logout', {
+      const res = await axios.get('http://localhost:3001/api/logout', {
         withCredentials: true,
       });
       if (res.status === 200) {
@@ -28,20 +28,26 @@ export default function Navbar() {
     }
   }
 
-  if(isLoggedIn) {
+  if (isLoggedIn) {
     return (
       <AppBar position="static" sx={{ bgcolor: '#3E2C95' }}>
-        <Toolbar sx={{ml: 10, display: 'flex', justifyContent: 'flex-end'}}>
+        <Toolbar sx={{ ml: 10, display: 'flex', justifyContent: 'flex-end' }}>
           <Typography variant="h6" color="inherit" noWrap sx={{ flexGrow: 1 }}>
-              MY HEALTH APP
+            MY HEALTH APP
           </Typography>
-          <Box >
-              <Link to="/achievements" style={{ padding: 5, color:'#FFFFFF' }}>
-                Achievements
-              </Link>
-              <Button onClick={logOut} href="/login" variant="outlined" sx={{ my: 1, mx: 1.5, bgcolor: '#FFFFFF' }}>
-                Logout
-              </Button>
+          <Box>
+            <Link to="/mainpage" style={{ padding: 5, color: '#FFFFFF' }}>
+              Home
+            </Link>
+            <Link to="/goals" style={{ padding: 5, color: '#FFFFFF' }}>
+              Goals
+            </Link>
+            <Link to="/achievements" style={{ padding: 5, color: '#FFFFFF' }}>
+              Achievements
+            </Link>
+            <Button onClick={logOut} href="/login" variant="outlined" sx={{ my: 1, mx: 1.5, bgcolor: '#FFFFFF' }}>
+              Logout
+            </Button>
           </Box>
         </Toolbar>
       </AppBar>
@@ -49,23 +55,23 @@ export default function Navbar() {
   } else {
     return (
       <AppBar position="static" sx={{ bgcolor: '#3E2C95' }}>
-        <Toolbar sx={{ml: 10, display: 'flex', justifyContent: 'flex-end'}}>
+        <Toolbar sx={{ ml: 10, display: 'flex', justifyContent: 'flex-end' }}>
           <Typography variant="h6" color="inherit" noWrap sx={{ flexGrow: 1 }}>
-              MY HEALTH APP
+            MY HEALTH APP
           </Typography>
-          <Box >
-              <Link to="/" style={{ padding: 5, color:'#FFFFFF' }}>
-                Home
-              </Link>
-              <Link to="/about" style={{ padding: 5, color:'#FFFFFF' }}>
-                About
-              </Link>
-              <Link to="/register" style={{ padding: 5, color:'#FFFFFF' }}>
-                Register
-              </Link>
-              <Button href="/login" variant="outlined" sx={{ my: 1, mx: 1.5, bgcolor: '#FFFFFF' }}>
-                Login
-              </Button>
+          <Box>
+            <Link to="/" style={{ padding: 5, color: '#FFFFFF' }}>
+              Home
+            </Link>
+            <Link to="/about" style={{ padding: 5, color: '#FFFFFF' }}>
+              About
+            </Link>
+            <Link to="/register" style={{ padding: 5, color: '#FFFFFF' }}>
+              Register
+            </Link>
+            <Button href="/login" variant="outlined" sx={{ my: 1, mx: 1.5, bgcolor: '#FFFFFF' }}>
+              Login
+            </Button>
           </Box>
         </Toolbar>
       </AppBar>

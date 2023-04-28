@@ -39,7 +39,7 @@ app.get('/api', (req, res) => {
   });
 });
 
-app.get('/api/v1/check', withAuth, (req, res) => {
+app.get('/api/check', withAuth, (req, res) => {
   const { id } = req.data;
   db.findOne({ _id: id }, (err, document) => {
     if (err) {
@@ -132,12 +132,12 @@ app.post('/api/login', (req, res) => {
   });
 });
 
-app.get('/api/v1/logout', (req, res) => {
+app.get('/api/logout', (req, res) => {
   res.clearCookie('token');
   res.sendStatus(200);
 });
 
-app.post('/api/v1/create', (req, res) => {
+app.post('/api/create', (req, res) => {
   const { goalType, goalName, startDate, endDate, repetition } = req.body;
   const goal_id = crypto.randomUUID()
   const id = req.headers.authorization
@@ -179,7 +179,7 @@ app.post('/api/v1/create', (req, res) => {
 */
 
 
-app.post('/api/v1/update', (req, res) => {
+app.post('/api/update', (req, res) => {
   const { goal_id, goal, startDate, endDate, repetition, completed, username } = req.body;
   db.update(
     { username: username },
@@ -214,7 +214,7 @@ app.post('/api/v1/update', (req, res) => {
   )
 });
 
-app.delete('/api/v1/delete', (req, res) => {
+app.delete('/api/delete', (req, res) => {
   const { goal_id, username } = req.body;
   db.update(
     { username: username },
@@ -238,7 +238,7 @@ app.delete('/api/v1/delete', (req, res) => {
   )
 });
 
-app.get('/api/v1/goals', (req, res) => {
+app.get('/api/goals', (req, res) => {
   const id = req.headers.authorization
   db.find({ _id: id }, function (err, doc) {
       const data = doc
