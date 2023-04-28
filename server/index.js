@@ -175,11 +175,6 @@ app.post('/api/create', (req, res) => {
   )
 });
 
-/**
-{"username":"Claudiu","password":"$2a$10$yijoNHQFQMHwyK/43J0HuOrKO3gv/keA8nKTeakVsVbX3V5xm6L9O","_id":"mAK0h8G8kyEGNDF1","goals":[{"goal_id":"001","goal":"g1","startDate":"1","endDate":"2"},{"goal_id":"002","goal":"g2","startDate":"1","endDate":"3"}]}
-*/
-
-
 app.post('/api/update/:goal_id', (req, res) => {
   const { goalType, goalName, startDate, endDate, repetition, complete } = req.body;
   const goal_id = req.params.goal_id

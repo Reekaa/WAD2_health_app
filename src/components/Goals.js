@@ -58,8 +58,9 @@ export default function Goals({}) {
         }
     }
 
-    const handleComplete = async (goal_id, goalType, goalName, startDate, endDate, repetition, complete) => {
+    const handleComplete = async (goal_id, goalName, goalType, startDate, endDate, repetition, complete) => {
         const updateFrom = {
+            goalName: goalName,
             goalType: goalType,
             goalName: goalName,
             startDate: startDate,

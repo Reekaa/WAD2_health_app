@@ -19,7 +19,7 @@ const theme = createTheme();
 export default function Update() {
     const { state } = useLocation();
     const { user } = useAuth()
-
+    console.log(state);
     const navigate = useNavigate();
     const userId = user.id
 
