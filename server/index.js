@@ -18,6 +18,9 @@ app.use(express.json());
 app.use(cors({ credentials: true, origin: ["http://localhost:3000", "https://main--legendary-tartufo-e04894.netlify.app"] }));
 
 const validator = [
+  check('password')
+  .isLength({ min: 6 })
+  .withMessage('Password should be at least 6 characters long'),
   check('username')
     .exists()
     .withMessage('Username is not provided'),
@@ -28,9 +31,6 @@ const validator = [
   check('password')
     .exists()
     .withMessage('Password is not provided'),
-  check('password')
-    .isLength({ min: 6 })
-    .withMessage('Password should be at least 6 characters long'),
 ];
 
 app.get('/api', (req, res) => {

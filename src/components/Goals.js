@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
+import AddIcon from '@mui/icons-material/Add';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
@@ -150,6 +151,11 @@ export default function Goals() {
                         }
                     })}
                 </Grid>
+                <Box sx={{ textAlign: 'center' }}>
+                    <Button onClick={() => { navigate('/create') }} sx={{ bgcolor: '#3E2C95', mt: 5 }} variant="contained" endIcon={<AddIcon />}>
+                        Add new goal
+                    </Button>
+                </Box>
             </Container>
         </React.Fragment>
     );
