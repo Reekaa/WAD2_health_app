@@ -38,11 +38,9 @@ export function UserProvider({ children }) {
           id: res.data.id,
           username: res.data.username,
         });
-        console.log(user);
         setIsLoggedIn(false);
       }
     } catch (error) {
-      console.log(error.response.data);
       setIsLoggedIn(false);
       navigate('/login');
     }

@@ -52,7 +52,6 @@ export default function CreateGoal() {
                     });
                 }
             } catch (err) {
-                console.log(err.response.data);
                 setErrorMessage(err.response.data.message);
             }
         }

@@ -30,8 +30,6 @@ export default function Update() {
         repetition: state.repetition,
         complete: false
     });
-   
-    console.log('Update form', form);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -48,7 +46,6 @@ export default function Update() {
                 navigate('/goals');
             }
         } catch (err) {
-            console.log(err.response.data);
             setErrorMessage(err.response.data.message);
         }
     }
