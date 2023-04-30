@@ -18,11 +18,9 @@ const theme = createTheme();
 
 export default function Update() {
     const { state } = useLocation();
-    const { user } = useAuth()
+    const { user } = useAuth();
     const navigate = useNavigate();
-    const userId = user.id
-
-    const [error, setError] = useState(false);
+    const userId = user.id;
     const [errorMessage, setErrorMessage] = useState('');
     const [form, setForm] = useState({
         goalType: state.goalType,
@@ -32,8 +30,10 @@ export default function Update() {
         repetition: state.repetition,
         complete: false
     });
+   
+    console.log('Update form', form);
 
-    async function handleSubmit(e) {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         try {
             const res = await axios.post(`http://localhost:3001/api/update/${state.goal_id}`, form, {
@@ -49,12 +49,11 @@ export default function Update() {
             }
         } catch (err) {
             console.log(err.response.data);
-            setError(true);
             setErrorMessage(err.response.data.message);
         }
     }
 
-    async function handleInput(e) {
+    const handleInput = (e) => {
         setForm({
             ...form,
             [e.target.name]: e.target.value,
@@ -79,7 +78,7 @@ export default function Update() {
                     <Typography component="h1" variant="h5">
                         Update Goal
                     </Typography>
-                    {error && <Typography sx={{ p: 1, color: "red" }}>{errorMessage}</Typography>}
+                    <Typography sx={{ p: 1, color: "red" }}>{errorMessage}</Typography>
                     <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
                         <Grid container spacing={2}>
                             <Grid item xs={12}>
