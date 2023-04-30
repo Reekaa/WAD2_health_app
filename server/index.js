@@ -141,32 +141,25 @@ app.post('/api/create', (req, res) => {
   const { goalType, goalName, startDate, endDate, repetition, complete } = req.body;
   const goal_id = crypto.randomUUID()
   const id = req.headers.authorization
-  console.log(goal_id, id);
   db.update(
     { _id: id },
     {
-      // $pull: {
-      //   goals: {
-      //     goal_id: goal_id,
-      //   }
-      // },
       $push: {
-        goals: 
-          {
-            goal_id: goal_id,
-            goalType: goalType,
-            goalName: goalName,
-            startDate: startDate,
-            endDate: endDate,
-            repetition: repetition,
-            complete: complete
-          }
+        goals:
+        {
+          goal_id: goal_id,
+          goalType: goalType,
+          goalName: goalName,
+          startDate: startDate,
+          endDate: endDate,
+          repetition: repetition,
+          complete: complete
+        }
       }
     },
     { upsert: false },
     function (err) {
-      if(err){
-        console.log(err);
+      if (err) {
         res.sendStatus(500);
       } else {
         res.status(201).json({
@@ -190,21 +183,21 @@ app.post('/api/update/:goal_id', (req, res) => {
         }
       },
       $push: {
-        goals: 
-          {
-            goal_id: goal_id,
-            goalType: goalType,
-            goalName: goalName,
-            startDate: startDate,
-            endDate: endDate,
-            repetition: repetition,
-            complete: complete
-          }
+        goals:
+        {
+          goal_id: goal_id,
+          goalType: goalType,
+          goalName: goalName,
+          startDate: startDate,
+          endDate: endDate,
+          repetition: repetition,
+          complete: complete
+        }
       }
     },
     { upsert: false },
     function (err) {
-      if(err){
+      if (err) {
         res.sendStatus(500);
       } else {
         res.status(201).json({
@@ -229,8 +222,7 @@ app.delete('/api/delete/:goal_id', (req, res) => {
     },
     { upsert: false },
     function (err) {
-      if(err){
-        console.log(err);
+      if (err) {
         res.sendStatus(500);
       } else {
         res.status(201).json({
@@ -244,18 +236,16 @@ app.delete('/api/delete/:goal_id', (req, res) => {
 app.get('/api/goals', (req, res) => {
   const id = req.headers.authorization
   db.find({ _id: id }, function (err, doc) {
-      const data = doc
-      console.log(data[0].goals);
-      if(err){
-        console.log(err);
-        res.sendStatus(500);
-      } else {
-        res.status(200).json({
-          message: "Goals found",
-          goals: data[0].goals
-        });
-      }
+    const data = doc
+    if (err) {
+      res.sendStatus(500);
+    } else {
+      res.status(200).json({
+        message: "Goals found",
+        goals: data[0].goals
+      });
     }
+  }
   )
 });
 

@@ -17,14 +17,18 @@ export default function Navbar() {
   async function logOut() {
     try {
       const res = await axios.get('http://localhost:3001/api/logout', {
+        method: 'GET',
         withCredentials: true,
+        headers: {
+          "Content-Type": "application/json"
+      }
       });
       if (res.status === 200) {
         setIsLoggedIn(false);
         navigate('/login');
       }
     } catch (error) {
-      console.error(error.response.data);
+      console.error(error.response.data.message);
     }
   }
 

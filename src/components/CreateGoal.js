@@ -21,7 +21,6 @@ const theme = createTheme();
 export default function CreateGoal() {
     const { user } = useAuth()
     const userId = user.id
-    const [error, setError] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
     const [form, setForm] = useState({
         goalType: '',
@@ -35,8 +34,7 @@ export default function CreateGoal() {
 
     async function handleSubmit(e) {
         e.preventDefault();
-        if (form.Type === null || form.goalName === null || form.startDate === null || form.endDate === null) {
-            setError(true);
+        if (form.goalType === null || form.goalName === null || form.startDate === null || form.endDate === null) {
             setErrorMessage('Information is missing');
         } else {
             try {
@@ -55,7 +53,6 @@ export default function CreateGoal() {
                 }
             } catch (err) {
                 console.log(err.response.data);
-                setError(true);
                 setErrorMessage(err.response.data.message);
             }
         }
@@ -94,15 +91,12 @@ export default function CreateGoal() {
                     <Typography component="h1" variant="h5">
                         Create Goal
                     </Typography>
-                    {error && <Typography sx={{ p: 1, color: "red" }}>{errorMessage}</Typography>}
+                    <Typography sx={{ p: 1, color: "red" }}>{errorMessage}</Typography>
                     <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
                         <Grid container spacing={2}>
                             <Grid item xs={12}>
                                 <InputLabel id="demo-simple-select-label">Goal Type</InputLabel>
                                 <Select
-                                    // labelId="demo-simple-select-label"
-                                    // id="demo-simple-select"
-                                    // value={age}
                                     label="Goal Type"
                                     onChange={handleChange}
                                     sx={{ minWidth: 400 }}

@@ -35,7 +35,6 @@ export default function Login() {
         username: '',
         password: '',
     });
-    const [error, setError] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
     const navigate = useNavigate();
 
@@ -65,7 +64,6 @@ export default function Login() {
                 navigate('/mainpage');
             }
         } catch (err) {
-            setError(true);
             setErrorMessage(err.response.data.message);
         }
     }
@@ -73,8 +71,6 @@ export default function Login() {
         navigate('/mainpage');
     }
 
-    console.log(error);
-    console.log(errorMessage);
     return (
         <ThemeProvider theme={theme}>
             <Grid
