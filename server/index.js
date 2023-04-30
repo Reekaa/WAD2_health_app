@@ -15,7 +15,7 @@ const key = 'mysupersecretkey';
 
 const app = express();
 app.use(express.json());
-app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
+app.use(cors({ credentials: true, origin: ["http://localhost:3000", "https://main--legendary-tartufo-e04894.netlify.app/"] }));
 
 const validator = [
   check('username')
