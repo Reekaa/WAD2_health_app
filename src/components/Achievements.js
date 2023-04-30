@@ -8,17 +8,13 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import GlobalStyles from '@mui/material/GlobalStyles';
 import Container from '@mui/material/Container';
-import CheckBoxIcon from '@mui/icons-material/CheckBox';
-import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../utils/userContext';
 import axios from 'axios';
 
-export default function Achievements({ }) {
+export default function Achievements() {
     const { user } = useAuth()
     const userId = user.id
     const [goals, setGoalsData] = useState([])
-    const [errorMessage, setErrorMessage] = useState('');
-    const [error, setError] = useState(false);
 
     React.useEffect(() => {
         const fetchData = async () => {
@@ -35,7 +31,7 @@ export default function Achievements({ }) {
             }
         }
         fetchData()
-    }, [])
+    }, [userId])
 
 
     return (
@@ -62,7 +58,7 @@ export default function Achievements({ }) {
                     {goals.map((goal) => {
                         if (goal.complete) {
                             return (
-                                <Grid item xs={4}>
+                                <Grid key={goal.goal_id} item xs={4}>
                                     <Card style={{ backgroundColor: "#E9E7EF", display: 'flex', justiyContent: 'space-between', flexDirection: 'column' }}>
                                         <CardHeader
                                             title={goal.goalType}

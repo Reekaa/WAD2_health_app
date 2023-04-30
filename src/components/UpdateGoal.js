@@ -19,7 +19,6 @@ const theme = createTheme();
 export default function Update() {
     const { state } = useLocation();
     const { user } = useAuth()
-    console.log(state);
     const navigate = useNavigate();
     const userId = user.id
 
@@ -33,10 +32,8 @@ export default function Update() {
         repetition: state.repetition,
         complete: false
     });
-   
-    console.log('Update form', form);
 
-    const handleSubmit = async (e) => {
+    async function handleSubmit(e) {
         e.preventDefault();
         try {
             const res = await axios.post(`http://localhost:3001/api/update/${state.goal_id}`, form, {
@@ -57,7 +54,7 @@ export default function Update() {
         }
     }
 
-    const handleInput = (e) => {
+    async function handleInput(e) {
         setForm({
             ...form,
             [e.target.name]: e.target.value,

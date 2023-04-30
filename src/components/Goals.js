@@ -14,12 +14,11 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../utils/userContext';
 import axios from 'axios';
 
-export default function Goals({}) {
+export default function Goals() {
     const { user } = useAuth()
     const userId = user.id
     const [goals, setGoalsData] = useState([])
     const [errorMessage, setErrorMessage] = useState('');
-    const [error, setError] = useState(false);
     const navigate = useNavigate();
 
     React.useEffect(() => {
@@ -37,9 +36,9 @@ export default function Goals({}) {
             }
         }
         fetchData()
-    }, [])
+    }, [userId])
 
-    const handleDelete = async (goal_id) => {
+    async function handleDelete(goal_id) {
         try {
             const res = await axios.delete(`http://localhost:3001/api/delete/${goal_id}`, {
                 method: 'DELETE',
@@ -52,23 +51,21 @@ export default function Goals({}) {
             if (res.status === 201) {
                 navigate('/mainpage')
             }
-        } catch (error){
-            setError(true);
+        } catch (error) {
             setErrorMessage(error.response.data.message);
         }
     }
 
-    const handleComplete = async (goal_id, goalName, goalType, startDate, endDate, repetition, complete) => {
+    async function handleComplete(goal_id, goalName, goalType, startDate, endDate, repetition, complete) {
         const updateFrom = {
             goalName: goalName,
             goalType: goalType,
-            goalName: goalName,
             startDate: startDate,
             endDate: endDate,
             repetition: repetition,
             complete: complete
         }
-         try {
+        try {
             const res = await axios.post(`http://localhost:3001/api/update/${goal_id}`, updateFrom, {
                 method: 'POST',
                 withCredentials: true,
@@ -81,13 +78,15 @@ export default function Goals({}) {
                 navigate('/achievements');
             }
         } catch (error) {
-            setError(true);
             setErrorMessage(error.response.data.message);
         }
     }
 
     return (
         <React.Fragment>
+            <Typography component="h1" variant="h5" sx={{ mb: 4, color: '#b32000' }}>
+                {errorMessage}
+            </Typography>
             <GlobalStyles styles={{ ul: { margin: 0, padding: 0, listStyle: 'none' } }} />
             <CssBaseline />
             <Container disableGutters component="main" sx={{ pt: 4, pb: 6 }}>
@@ -108,45 +107,47 @@ export default function Goals({}) {
             <Container>
                 <Grid container spacing={3}>
                     {goals.map((goal) => {
-                        return (
-                            <Grid item xs={4}>
-                            <Card style={{ backgroundColor: "#E9E7EF", display: 'flex', justiyContent: 'space-between', flexDirection: 'column' }}>
-                                <CardHeader
-                                    title={goal.goalType}
-                                    sx={{ textAlign: 'center' }}
-                                />
-                                <CardContent>
-                                    <Box
-                                        sx={{
-                                            justifyContent: 'center',
-                                            alignItems: 'center',
-                                            mb: 2
-                                        }}
-                                    >
-                                        <Typography variant="h6" sx={{ mb: 1, justifyContent: 'center' }}>Goal: {goal.goalName}</Typography>
-                                        <Typography variant="body1" sx={{ mb: 1 }}>Start date: {goal.startDate}</Typography>
-                                        <Typography variant="body1" sx={{ mb: 1 }}>End date: {goal.endDate}</Typography>
-                                        <Typography variant="body1" sx={{ mb: 1 }}>Repetition: {goal.repetition}</Typography>
-                                    </Box>
-                                </CardContent>
-                                <CardActions sx={{ justifyContent: 'center' }}>
-                                    <Button 
-                                        onClick={() => navigate('/update',{ state: { goal_id: goal.goal_id, goalName: goal.goalName, goalType: goal.goalType, startDate: goal.startDate, endDate: goal.endDate, repetition: goal.repetition, complete: goal.complete }})} 
-                                        sx={{ bgcolor: '#3E2C95' }} 
-                                        variant="contained"
-                                    >
-                                        Update
-                                    </Button>
-                                    <Button onClick={() => handleDelete(goal.goal_id)} sx={{ bgcolor: '#3E2C95' }} variant="contained">
-                                        Delete
-                                    </Button>
-                                    <Button onClick={() => handleComplete(goal.goal_id, goal.goalName, goal.goalType, goal.startDate, goal.endDate, goal.repetition, true)} sx={{ bgcolor: '#3E2C95' }} variant="contained">
-                                        Completed
-                                    </Button>
-                                </CardActions>
-                            </Card>
-                        </Grid>
-                        )
+                        if (!goal.complete) {
+                            return (
+                                <Grid key={goal.goal_id} item xs={4}>
+                                    <Card style={{ backgroundColor: "#E9E7EF", display: 'flex', justiyContent: 'space-between', flexDirection: 'column' }}>
+                                        <CardHeader
+                                            title={goal.goalType}
+                                            sx={{ textAlign: 'center' }}
+                                        />
+                                        <CardContent>
+                                            <Box
+                                                sx={{
+                                                    justifyContent: 'center',
+                                                    alignItems: 'center',
+                                                    mb: 2
+                                                }}
+                                            >
+                                                <Typography variant="h6" sx={{ mb: 1, justifyContent: 'center' }}>Goal: {goal.goalName}</Typography>
+                                                <Typography variant="body1" sx={{ mb: 1 }}>Start date: {goal.startDate}</Typography>
+                                                <Typography variant="body1" sx={{ mb: 1 }}>End date: {goal.endDate}</Typography>
+                                                <Typography variant="body1" sx={{ mb: 1 }}>Repetition: {goal.repetition}</Typography>
+                                            </Box>
+                                        </CardContent>
+                                        <CardActions sx={{ justifyContent: 'center' }}>
+                                            <Button
+                                                onClick={() => navigate('/update', { state: { goal_id: goal.goal_id, goalName: goal.goalName, goalType: goal.goalType, startDate: goal.startDate, endDate: goal.endDate, repetition: goal.repetition, complete: goal.complete } })}
+                                                sx={{ bgcolor: '#3E2C95' }}
+                                                variant="contained"
+                                            >
+                                                Update
+                                            </Button>
+                                            <Button onClick={() => handleDelete(goal.goal_id)} sx={{ bgcolor: '#3E2C95' }} variant="contained">
+                                                Delete
+                                            </Button>
+                                            <Button onClick={() => handleComplete(goal.goal_id, goal.goalName, goal.goalType, goal.startDate, goal.endDate, goal.repetition, true)} sx={{ bgcolor: '#3E2C95' }} variant="contained">
+                                                Complete
+                                            </Button>
+                                        </CardActions>
+                                    </Card>
+                                </Grid>
+                            )
+                        }
                     })}
                 </Grid>
             </Container>

@@ -30,7 +30,7 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function Login() {
-    const { user, setUserData, isLoggedIn, setIsLoggedIn } = useAuth()
+    const { setUserData, isLoggedIn, setIsLoggedIn } = useAuth()
     const [form, setForm] = useState({
         username: '',
         password: '',

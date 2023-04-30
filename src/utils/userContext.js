@@ -13,7 +13,7 @@ export function UserProvider({ children }) {
   const [user, setUserData] = useState(null)
   const [isLoggedIn, setIsLoggedIn] = useState(null)
 
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const value = {
     user,
@@ -22,31 +22,31 @@ export function UserProvider({ children }) {
     setIsLoggedIn
   }
 
-  // useEffect(() => {
-  //   try {
-  //     const res = axios.get('http://localhost:3001/api/check', {
-  //       method: 'GET',
-  //       withCredentials: true,
-  //       headers: {
-  //         "Content-Type": "application/json"
-  //     }
+  useEffect(() => {
+    try {
+      const res = axios.get('http://localhost:3001/api/check', {
+        method: 'GET',
+        withCredentials: true,
+        headers: {
+          "Content-Type": "application/json"
+      }
 
-  //     })
-  //     if (res.status === 200) {
-  //       setIsLoggedIn(true);
-  //       setUserData({
-  //         id: res.data.id,
-  //         username: res.data.username,
-  //       });
-  //       console.log(user);
-  //       setIsLoggedIn(false);
-  //     }
-  //   } catch (error) {
-  //     console.log(error.response.data);
-  //     setIsLoggedIn(false);
-  //     navigate('/login');
-  //   }
-  // }, [user, isLoggedIn])
+      })
+      if (res.status === 200) {
+        setIsLoggedIn(true);
+        setUserData({
+          id: res.data.id,
+          username: res.data.username,
+        });
+        console.log(user);
+        setIsLoggedIn(false);
+      }
+    } catch (error) {
+      console.log(error.response.data);
+      setIsLoggedIn(false);
+      navigate('/login');
+    }
+  }, [user, isLoggedIn, navigate])
 
   return (
     <UserContext.Provider value={value}>
